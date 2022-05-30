@@ -1,0 +1,6 @@
+#!/bin/sh
+#here we see the python virtual environment being activated
+source env/bin/activate
+
+#to deactivate run
+#deactivate

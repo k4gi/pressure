@@ -1,0 +1,7 @@
+#!/bin/sh
+#this is how to set up this python virtual environment thing
+python3 -m venv env
+python3 -m pip install tcod
+
+#could also do this to install tcod
+#pip install -r requirements.txt
