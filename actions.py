@@ -1,14 +1,15 @@
 class Action:
-    pass
+	pass
 
 
 class EscapeAction(Action):
-    pass
+	pass
 
 
 class MovementAction(Action):
-    def __init__(self, dx: int, dy: int):
-        super().__init__()
+	def __init__(self, dx: int, dy: int):
+		super().__init__()
 
-        self.dx = dx
-        self.dy = dy
+		self.dx = dx
+		self.dy = dy
+
