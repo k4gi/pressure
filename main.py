@@ -17,7 +17,7 @@ def main() -> None:
 
 	room_min_size = 3
 	room_max_size = 6
-	max_rooms = 10
+	max_rooms = 20
 
 	tileset = tcod.tileset.load_tilesheet(
 		"dejavu10x10_gs_tc.png", 32, 8, tcod.tileset.CHARMAP_TCOD
@@ -29,7 +29,14 @@ def main() -> None:
 	npc = Entity( 8, 6, '@', (255,255,0) )
 	entities = {npc, player}
    
-	game_map = generate_dungeon(map_width, map_height)
+	game_map = generate_dungeon(
+	map_width = map_width,
+	map_height = map_height,
+	max_rooms = max_rooms,
+	room_min_size = room_min_size,
+	room_max_size = room_max_size,
+	player = player,
+	)
 
 	engine = Engine(entities=entities, event_handler=event_handler, game_map=game_map, player=player)
 

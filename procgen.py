@@ -1,9 +1,11 @@
 from __future__ import annotations
-from typing import Iterator, Tuple
+from typing import Iterator, List, Tuple, TYPE_CHECKING
 from game_map import GameMap
 import tile_types
 import random
 import tcod
+if TYPE_CHECKING:
+	from entity import Entity
 
 
 class RectangularRoom:
@@ -51,7 +53,43 @@ def tunnel_between( start: Tuple[int, int], end: Tuple[int, int] ) -> Iterator[T
 		yield x, y
 
 
-def generate_dungeon(map_width, map_height) -> GameMap:
+def generate_dungeon(
+	map_width: int,
+	map_height: int,
+	max_rooms: int,
+	room_min_size: int,
+	room_max_size: int,
+	player: Entity,
+) -> GameMap:
+	dungeon = GameMap(map_width, map_height)
+	rooms: List[RectangularRoom] = []
+
+	for r in range(max_rooms):
+		room_width = random.randint(room_min_size, room_max_size)
+		room_height = random.randint(room_min_size, room_max_size)
+
+		x = random.randint(0, dungeon.width - room_width - 1)
+		y = random.randint(0, dungeon.height - room_height - 1)
+
+		new_room = RectangularRoom(x, y, room_width, room_height)
+
+		if any(new_room.intersects(other_room) for other_room in rooms):
+			continue #don't use this room
+
+		dungeon.tiles[new_room.inner] = tile_types.floor
+
+		if len(rooms) == 0:
+			player.x, player.y = new_room.centre
+		else:
+			for x, y in tunnel_between(rooms[-1].centre, new_room.centre):
+				dungeon.tiles[x,y] = tile_types.floor
+
+		rooms.append(new_room)
+
+	return dungeon
+
+
+def generate_test_dungeon(map_width, map_height) -> GameMap:
 	dungeon = GameMap(map_width,map_height)
 
 	room_1 = RectangularRoom(x=0,y=0,width=4,height=4)
