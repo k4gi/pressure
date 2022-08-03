@@ -61,7 +61,7 @@ def generate_dungeon(
 	room_max_size: int,
 	player: Entity,
 ) -> GameMap:
-	dungeon = GameMap(map_width, map_height)
+	dungeon = GameMap(map_width, map_height, entities=[player])
 	rooms: List[RectangularRoom] = []
 
 	for r in range(max_rooms):
@@ -85,21 +85,6 @@ def generate_dungeon(
 				dungeon.tiles[x,y] = tile_types.floor
 
 		rooms.append(new_room)
-
-	return dungeon
-
-
-def generate_test_dungeon(map_width, map_height) -> GameMap:
-	dungeon = GameMap(map_width,map_height)
-
-	room_1 = RectangularRoom(x=0,y=0,width=4,height=4)
-	room_2 = RectangularRoom(x=6,y=4,width=4,height=4)
-
-	dungeon.tiles[room_1.inner] = tile_types.floor
-	dungeon.tiles[room_2.inner] = tile_types.floor
-
-	for x, y in tunnel_between(room_1.centre, room_2.centre):
-		dungeon.tiles[x, y] = tile_types.floor
 
 	return dungeon
 
